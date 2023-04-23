@@ -1,5 +1,5 @@
 % number of realizations to generate
-N = 1000;
+N = 2048;
 
 % parameters for the Gaussian random field
 gamma = 2.5;
