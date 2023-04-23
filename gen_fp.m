@@ -7,8 +7,8 @@ tau = 7;
 sigma = 7^(2);
 
 % parameters for the drift and diffusion coefficients
-a = 0.5;
-b = 0.1;
+a = 0.005;
+b = 0.002;
 
 % grid size
 s = 32;
