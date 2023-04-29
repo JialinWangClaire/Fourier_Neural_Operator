@@ -16,14 +16,16 @@
 % We use the burgers_data_R10.mat, which contains initial velocities $u_0$ and 
 % solutions $u\left(x,1\right)$ of the Burgers' equation which we use as training 
 % inputs and targets respectively. The network inputs also consist of the spatial 
-% domain $x=\left(0,1\right)$ at the desired discretization. In this example we 
+% domain $x=\left(0,1\right)$ axt the desired discretization. In this example we 
 % choose a grid size of $h=2^{10}$.
 
 % Download training data.
-dataFile = fullfile('fp_data.mat');
+dataFile = fullfile('new_data_plus.mat');
 data = load(dataFile, 'input', 'output');
 x = data.input;
 t = data.output;
+% x = bsxfun(@rdivide, data.input, sum(data.input, 2));
+% t = bsxfun(@rdivide, data.output, sum(data.output, 2));
 
 % Setup.
 addpath(genpath('fno'));
@@ -59,7 +61,7 @@ xTest = cat(3, xTest, repmat(xgrid, [numTest 1]));
 % space filters out higher order oscillations in the solution, while the linear 
 % convolution learns local correlations.
 
-numModes = 16; %16;
+numModes = 10; %16;
 width = 64; %64;
 
 lg = layerGraph([ ...
@@ -112,10 +114,10 @@ analyzeNetwork(net)
 executionEnvironment = "gpu";
 
 batchSize = 20;
-learnRate = 1e-6;
+learnRate = 1e-3; %6;
 momentum = 0.9;
 
-numEpochs = 35;
+numEpochs = 20;
 stepSize = 100;
 gamma = 0.5;
 expNum = 1;
@@ -217,7 +219,7 @@ for p = 1:4
     yn = predict(net, xn);
 
     subplot(2, 2, p)
-    plot(gridHighRes, t(idxToPlot(p),:)), hold on, plot(gridHighRes, extractdata(yn))
+    plot(gridHighRes, t(idxToPlot(p),:)/sum(t(idxToPlot(p),:))), hold on, plot(gridHighRes, extractdata(yn)/sum(extractdata(yn)))
     axis tight
     xlabel('x')
     ylabel('U')

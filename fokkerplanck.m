@@ -10,7 +10,7 @@ S.lin = @(u) - a*diff(u,1) + (b/2)*diff(u,2);
 
 % set the initial condition
 S.init = init;
-
+plot(S.init)
 % solve the equation using the spin function
 u = spin(S,s,dt,'plot','off');
 
